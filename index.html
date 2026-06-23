@@ -19,8 +19,13 @@
     }
 
     /* ─── iPhone shell ─── */
-    .iphone {
+    .iphone-outer {
       position: relative;
+      flex-shrink: 0;
+    }
+    .iphone {
+      position: absolute;
+      top: 0; left: 0;
       width: 393px;
       height: 852px;
       background: #000;
@@ -30,7 +35,7 @@
         0 0 0 4px #111,
         0 44px 140px rgba(0,0,0,0.65);
       overflow: hidden;
-      flex-shrink: 0;
+      transform-origin: top left;
     }
     .iphone::before {
       content: '';
@@ -288,7 +293,8 @@
     /* ─── Mobile: no iPhone shell ─── */
     @media (max-width: 440px) {
       body { background: var(--bg); align-items: flex-start; min-height: 100dvh; }
-      .iphone { width: 100%; height: 100dvh; border-radius: 0; box-shadow: none; background: transparent; }
+      .iphone-outer { width: 100% !important; height: 100dvh !important; }
+      .iphone { position: relative; width: 100% !important; height: 100dvh !important; border-radius: 0; box-shadow: none; background: transparent; transform: none !important; }
       .iphone::before { display: none; }
       .iphone-screen { border-radius: 0; height: 100dvh; }
     }
@@ -296,6 +302,7 @@
 </head>
 <body>
 
+<div class="iphone-outer">
 <div class="iphone">
   <div class="iphone-screen">
     <div class="app">
@@ -951,8 +958,22 @@
     </div><!-- /app -->
   </div><!-- /iphone-screen -->
 </div><!-- /iphone -->
+</div><!-- /iphone-outer -->
 
 <script>
+  function scaleIphone() {
+    if (window.innerWidth <= 440) return;
+    const pad = 32;
+    const s = Math.min(1, (window.innerHeight - pad) / 852, (window.innerWidth - pad) / 393);
+    const iphone = document.querySelector('.iphone');
+    const outer = document.querySelector('.iphone-outer');
+    iphone.style.transform = `scale(${s})`;
+    outer.style.width = (393 * s) + 'px';
+    outer.style.height = (852 * s) + 'px';
+  }
+  scaleIphone();
+  window.addEventListener('resize', scaleIphone);
+
   const nav = document.getElementById('bottom-nav');
   const screens = document.querySelectorAll('.screen');
   const chatBadge = document.getElementById('chat-badge');
