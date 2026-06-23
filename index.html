@@ -212,7 +212,9 @@
     }
     .nav-pill-main { flex: 1; }
     .nav-pill-chat {
-      padding: 10px 14px 12px;
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      padding: 0;
       flex-shrink: 0;
     }
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -692,14 +694,10 @@
             <span class="nav-lbl">Профиль</span>
           </div>
         </div>
-        <!-- Right pill: Связь -->
+        <!-- Right pill: Search -->
         <div class="nav-pill nav-pill-chat">
-          <div class="nav-item" data-screen="s-chat" id="nav-chat">
-            <div class="nav-ico" style="position:relative">
-              <i data-lucide="message-square"></i>
-              <div style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--red);border-radius:7px;border:2px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff" id="chat-badge">1</div>
-            </div>
-            <span class="nav-lbl">Связь</span>
+          <div class="nav-item" data-screen="s-srv" style="min-width:auto">
+            <div class="nav-ico"><i data-lucide="search"></i></div>
           </div>
         </div>
       </div>
