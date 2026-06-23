@@ -198,16 +198,24 @@
     /* ─── Bottom nav ─── */
     .bottom-nav {
       position: absolute; bottom: 16px; left: 16px; right: 16px;
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 10px 8px 12px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 20;
+    }
+    .nav-pill {
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 10px 6px 12px;
       border-radius: 28px;
       background: rgba(255,255,255,0.45);
       backdrop-filter: blur(10px) saturate(150%);
       -webkit-backdrop-filter: blur(10px) saturate(150%);
       box-shadow: 0 2px 24px rgba(0,0,0,0.10), 0 0 0 0.5px rgba(0,0,0,0.07);
-      z-index: 20;
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 60px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .nav-pill-main { flex: 1; }
+    .nav-pill-chat {
+      padding: 10px 14px 12px;
+      flex-shrink: 0;
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .nav-ico { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
     .nav-lbl { font-size: 10px; font-weight: 500; color: var(--sub); }
     .nav-item.active .nav-lbl { color: var(--red); }
@@ -665,28 +673,34 @@
 
       <!-- ══════════ BOTTOM NAV ══════════ -->
       <div class="bottom-nav" id="bottom-nav">
-        <div class="nav-item active" data-screen="s-home">
-          <div class="nav-ico"><i data-lucide="home"></i></div>
-          <span class="nav-lbl">Главный</span>
-        </div>
-        <div class="nav-item" data-screen="s-pay">
-          <div class="nav-ico"><i data-lucide="file-text"></i></div>
-          <span class="nav-lbl">Платежи</span>
-        </div>
-        <div class="nav-item" data-screen="s-srv">
-          <div class="nav-ico"><i data-lucide="layout-grid"></i></div>
-          <span class="nav-lbl">Сервисы</span>
-        </div>
-        <div class="nav-item" data-screen="s-chat">
-          <div class="nav-ico" style="position:relative">
-            <i data-lucide="message-square"></i>
-            <div style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--red);border-radius:7px;border:2px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff" id="chat-badge">1</div>
+        <!-- Left pill: 4 main tabs -->
+        <div class="nav-pill nav-pill-main">
+          <div class="nav-item active" data-screen="s-home">
+            <div class="nav-ico"><i data-lucide="home"></i></div>
+            <span class="nav-lbl">Главный</span>
           </div>
-          <span class="nav-lbl">Связь</span>
+          <div class="nav-item" data-screen="s-pay">
+            <div class="nav-ico"><i data-lucide="file-text"></i></div>
+            <span class="nav-lbl">Платежи</span>
+          </div>
+          <div class="nav-item" data-screen="s-srv">
+            <div class="nav-ico"><i data-lucide="layout-grid"></i></div>
+            <span class="nav-lbl">Сервисы</span>
+          </div>
+          <div class="nav-item" data-screen="s-profile">
+            <div class="nav-ico"><i data-lucide="user"></i></div>
+            <span class="nav-lbl">Профиль</span>
+          </div>
         </div>
-        <div class="nav-item" data-screen="s-profile">
-          <div class="nav-ico"><i data-lucide="user"></i></div>
-          <span class="nav-lbl">Профиль</span>
+        <!-- Right pill: Связь -->
+        <div class="nav-pill nav-pill-chat">
+          <div class="nav-item" data-screen="s-chat" id="nav-chat">
+            <div class="nav-ico" style="position:relative">
+              <i data-lucide="message-square"></i>
+              <div style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--red);border-radius:7px;border:2px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff" id="chat-badge">1</div>
+            </div>
+            <span class="nav-lbl">Связь</span>
+          </div>
         </div>
       </div>
 
@@ -716,12 +730,13 @@
   const screens = document.querySelectorAll('.screen');
   const chatBadge = document.getElementById('chat-badge');
 
-  nav.querySelectorAll('.nav-item').forEach(item => {
+  const allNavItems = nav.querySelectorAll('.nav-item');
+  allNavItems.forEach(item => {
     item.addEventListener('click', () => {
       const target = item.dataset.screen;
       screens.forEach(s => s.classList.toggle('active', s.id === target));
       screens.forEach(s => { if (s.id === target) s.scrollTop = 0; });
-      nav.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      allNavItems.forEach(n => n.classList.remove('active'));
       item.classList.add('active');
       if (target === 's-chat' && chatBadge) chatBadge.style.display = 'none';
     });
